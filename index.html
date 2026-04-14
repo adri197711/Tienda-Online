@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Tienda online con las mejores ofertas en tecnología, moda y más"
+    />
+    <title>Tienda OnLine - Las Mejores Ofertas</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="manifest" href="data:application/json,{}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#6C63FF" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast">
+      <i class="fas fa-check-circle"></i>
+      <span id="toastMsg">Producto agregado</span>
+    </div>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+      <div class="header-top">
+        <div class="logo">
+          <i class="fas fa-store"></i>
+          <span>Tecno Pulse</span>
+        </div>
+        <div class="header-icons">
+          <div class="header-icon" onclick="showPage('favorites')">
+            <i class="fas fa-heart"></i>
+          </div>
+          <div class="header-icon" onclick="toggleCart()">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="cart-badge" id="cartBadge" style="display: none"
+              >0</span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Buscar productos..."
+          oninput="searchProducts(this.value)"
+        />
+      </div>
+    </header>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <!-- HOME PAGE -->
+    <div class="page active" id="page-home">
+      <!-- PROMO BANNER -->
+      <div class="promo-banner" id="promoBanner">
+        <div
+          class="promo-slide active"
+          style="background: linear-gradient(135deg, #ff6584, #ff8a5c)"
+        >
+          <h2>🔥 MEGA OFERTAS</h2>
+          <p>Hasta 50% OFF en productos seleccionados</p>
+          <div class="promo-btn" onclick="filterCategory('ofertas')">
+            Ver Ofertas
+          </div>
+        </div>
+        <div
+          class="promo-slide"
+          style="background: linear-gradient(135deg, #6c63ff, #5a52d5)"
+        >
+          <h2>🚀 ENVÍO GRATIS</h2>
+          <p>En compras mayores a $15,000</p>
+          <div class="promo-btn" onclick="filterCategory('todos')">
+            Comprar Ahora
+          </div>
+        </div>
+        <div
+          class="promo-slide"
+          style="background: linear-gradient(135deg, #25d366, #128c7e)"
+        >
+          <h2>💬 PEDÍ POR WHATSAPP</h2>
+          <p>Atención personalizada y respuesta inmediata</p>
+          <div class="promo-btn" onclick="openWhatsApp()">Escribinos</div>
+        </div>
+        <div class="promo-dots">
+          <div class="promo-dot active" onclick="goToSlide(0)"></div>
+          <div class="promo-dot" onclick="goToSlide(1)"></div>
+          <div class="promo-dot" onclick="goToSlide(2)"></div>
+        </div>
+      </div>
+
+      <!-- CATEGORIES -->
+      <div class="section-title">
+        <h3>Categorías</h3>
+        <a href="javascript:void(0)" onclick="filterCategory('todos')"
+          >Ver todas</a
+        >
+      </div>
+      <div class="categories" id="categoriesContainer">
+        <div
+          class="category-item active"
+          onclick="filterCategory('todos', this)"
+        >
+          <div class="cat-icon"><i class="fas fa-th-large"></i></div>
+          <span>Todos</span>
+        </div>
+        <div class="category-item" onclick="filterCategory('tecnologia', this)">
+          <div class="cat-icon"><i class="fas fa-laptop"></i></div>
+          <span>Tecnología</span>
+        </div>
+        <div class="category-item" onclick="filterCategory('moda', this)">
+          <div class="cat-icon"><i class="fas fa-tshirt"></i></div>
+          <span>Moda</span>
+        </div>
+        <div class="category-item" onclick="filterCategory('hogar', this)">
+          <div class="cat-icon"><i class="fas fa-home"></i></div>
+          <span>Hogar</span>
+        </div>
+        <div class="category-item" onclick="filterCategory('belleza', this)">
+          <div class="cat-icon"><i class="fas fa-spa"></i></div>
+          <span>Belleza</span>
+        </div>
+        <div class="category-item" onclick="filterCategory('accesorios', this)">
+          <div class="cat-icon"><i class="fas fa-gem"></i></div>
+          <span>Accesorios</span>
+        </div>
+        <div class="category-item" onclick="filterCategory('deportes', this)">
+          <div class="cat-icon"><i class="fas fa-running"></i></div>
+          <span>Deportes</span>
+        </div>
+      </div>
+
+      <!-- FLASH SALE -->
+      <div class="flash-sale">
+        <div class="flash-info">
+          <i class="fas fa-bolt"></i>
+          <h4>⚡ Flash Sale</h4>
+        </div>
+        <div class="flash-timer">
+          <div class="timer-box" id="hours">05</div>
+          <div class="timer-sep">:</div>
+          <div class="timer-box" id="minutes">32</div>
+          <div class="timer-sep">:</div>
+          <div class="timer-box" id="seconds">18</div>
+        </div>
+      </div>
+
+      <!-- TRUST BADGES -->
+      <!-- <div class="trust-badges">
+        <div class="trust-item">
+          <i class="fas fa-shield-alt"></i>
+          <span>Compra Segura</span>
+        </div>
+        <div class="trust-item">
+          <i class="fas fa-truck"></i>
+          <span>Envío Rápido</span>
+        </div>
+        <div class="trust-item">
+          <i class="fas fa-undo"></i>
+          <span>Devolución</span>
+        </div>
+        <div class="trust-item">
+          <i class="fas fa-credit-card"></i>
+          <span>Cuotas</span>
+        </div>
+      </div> -->
+
+      <!-- PRODUCTS -->
+      <div class="section-title">
+        <h3 id="productsTitle">🔥 Productos Destacados</h3>
+        <a href="#" onclick="filterCategory('todos')">Ver todos</a>
+      </div>
+      <div class="products-grid" id="productsGrid">
+        <!-- Products will be loaded here by JS -->
+      </div>
+
+      <!-- TESTIMONIALS -->
+      <div class="section-title">
+        <h3>⭐ Opiniones de clientes</h3>
+      </div>
+      <div class="testimonials">
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">ML</div>
+            <div>
+              <div class="testimonial-name">María López</div>
+              <div class="testimonial-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-text">
+            Excelente atención y productos de calidad. Llegó todo perfecto y
+            rápido. ¡100% recomendado!
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">CG</div>
+            <div>
+              <div class="testimonial-name">Carlos García</div>
+              <div class="testimonial-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-text">
+            Los mejores precios que encontré. El pago con Mercado Pago fue súper
+            fácil. Ya es mi tienda favorita.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAVORITES PAGE -->
+      <div class="page" id="page-favorites">
+        <div class="section-title">
+          <h3>❤️ Mis Favoritos</h3>
+        </div>
+        <div class="products-grid" id="favoritesGrid"></div>
+        <div class="fav-empty" id="favEmpty">
+          <i class="far fa-heart"></i>
+          <h4>No tenés favoritos aún</h4>
+          <p>Tocá el ❤️ en los productos que te gusten</p>
+        </div>
+      </div>
+
+      <!-- ========== PRODUCT DETAIL MODAL ========== -->
+      <div class="product-modal" id="productModal">
+        <div class="detail-header">
+          <button class="back-btn" onclick="closeProductDetail()">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <button
+            class="back-btn"
+            onclick="shareProduct()"
+            style="background: none"
+          >
+            <i class="fas fa-share-alt"></i>
+          </button>
+        </div>
+        <div class="detail-img" id="detailImg"></div>
+        <div class="detail-body">
+          <div id="reviewsContainer"></div>
+
+          <form id="reviewForm">
+            <input type="text" id="user" placeholder="Tu nombre" required />
+
+            <select id="rating">
+              <option value="5">⭐⭐⭐⭐⭐</option>
+              <option value="4">⭐⭐⭐⭐</option>
+              <option value="3">⭐⭐⭐</option>
+            </select>
+
+            <textarea id="comment" placeholder="Tu opinión" required></textarea>
+
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+        <span class="detail-category" id="detailCategory">Tecnología</span>
+        <h2 class="detail-name" id="detailName">Nombre del Producto</h2>
+        <div class="detail-rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star-half-alt"></i>
+          <span id="detailRating">4.5 (128 ventas)</span>
+        </div>
+        <div class="detail-price-box">
+          <span class="detail-price" id="detailPrice">$0</span>
+          <span class="detail-old-price" id="detailOldPrice">$0</span>
+          <span class="detail-discount" id="detailDiscount">-20%</span>
+          <div class="detail-installments" id="detailInstallments">
+            <i class="fas fa-credit-card"></i> 6 cuotas sin interés
+          </div>
+        </div>
+        <div class="detail-description">
+          <h4>Descripción</h4>
+          <p id="detailDesc">Descripción del producto aquí...</p>
+        </div>
+        <div class="detail-features">
+          <h4>Características</h4>
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i
+            ><span>Producto 100% original</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i><span>Garantía incluida</span>
+          </div>
+          <!-- <div class="feature-item">
+            <i class="fas fa-check-circle"></i><span>Envío a todo el país</span>
+          </div> -->
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i
+            ><span>Pago en cuotas sin interés</span>
+          </div>
+        </div>
+      </div>
+      <div class="detail-actions">
+        <button
+          class="detail-add-cart"
+          id="detailAddBtn"
+          onclick="addFromDetail()"
+        >
+          <i class="fas fa-shopping-bag"></i> Agregar al Carrito
+        </button>
+        <button class="detail-buy-now" onclick="buyNowFromDetail()">
+          <i class="fas fa-bolt"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== CART MODAL ========== -->
+    <div class="modal-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-modal" id="cartModal">
+      <div class="cart-handle"><div></div></div>
+      <div class="cart-header">
+        <h3>🛒 Mi Carrito (<span id="cartCount">0</span>)</h3>
+        <button class="cart-clear" onclick="clearCart()">Vaciar</button>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <div class="cart-empty" id="cartEmpty">
+          <i class="fas fa-shopping-bag"></i>
+          <h4>Tu carrito está vacío</h4>
+          <p>Agregá productos para comenzar</p>
+        </div>
+      </div>
+      <div class="cart-summary" id="cartSummary" style="display: none">
+        <div class="summary-row">
+          <span class="label">Subtotal</span>
+          <span id="subtotal">$0</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Envío</span>
+          <span id="shipping" style="color: var(--success)">Gratis</span>
+        </div>
+        <div class="summary-row total">
+          <span>TOTAL</span>
+          <span id="totalPrice">$0</span>
+        </div>
+      </div>
+      <div class="checkout-buttons" id="checkoutBtns" style="display: none">
+        <button class="btn-mercadopago" onclick="payWithMercadoPago()">
+          <i class="fas fa-credit-card"></i> Pagar con Mercado Pago
+        </button>
+        <button class="btn-whatsapp-order" onclick="orderByWhatsApp()">
+          <i class="fab fa-whatsapp"></i> Pedir por WhatsApp
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== CHECKOUT MODAL ========== -->
+    <div
+      class="modal-overlay"
+      id="checkoutOverlay"
+      onclick="closeCheckout()"
+    ></div>
+    <div class="cart-modal" id="checkoutModal">
+      <div class="cart-handle"><div></div></div>
+      <div class="cart-header">
+        <h3>📋 Datos de Envío</h3>
+        <button class="cart-clear" onclick="closeCheckout()">✕</button>
+      </div>
+      <div class="checkout-form">
+        <div class="form-group">
+          <label>Nombre completo *</label>
+          <input type="text" id="custName" placeholder="Juan Pérez" required />
+        </div>
+        <div class="form-group">
+          <label>Teléfono / WhatsApp *</label>
+          <input type="tel" id="custPhone" placeholder="11..." required />
+        </div>
+        <div class="form-group">
+          <label>Dirección de envío *</label>
+          <input
+            type="text"
+            id="custAddress"
+            placeholder="Calle 123, Ciudad"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Notas adicionales</label>
+          <textarea
+            id="custNotes"
+            placeholder="Depto, referencias, horario..."
+          ></textarea>
+        </div>
+      </div>
+      <div class="checkout-buttons">
+        <button
+          class="btn-mercadopago"
+          id="confirmPayBtn"
+          onclick="confirmPay()"
+        >
+          <i class="fas fa-lock"></i> Confirmar y Pagar
+        </button>
+        <button
+          class="btn-whatsapp-order"
+          id="confirmWABtn"
+          onclick="confirmWhatsApp()"
+        >
+          <i class="fab fa-whatsapp"></i> Confirmar por WhatsApp
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== WHATSAPP FLOAT ========== -->
+    <a class="whatsapp-float" onclick="openWhatsApp()" id="waFloat">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- ========== BOTTOM NAV ========== -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="showPage('home', this)">
+        <i class="fas fa-home"></i>
+        <span>Inicio</span>
+      </button>
+      <button
+        class="nav-item"
+        onclick="
+          filterCategory('ofertas');
+          showPage('home', this);
+        "
+      >
+        <i class="fas fa-fire"></i>
+        <span>Ofertas</span>
+      </button>
+      <button class="nav-item" onclick="toggleCart()">
+        <i class="fas fa-shopping-bag"></i>
+        <span>Carrito</span>
+        <span class="nav-badge" id="navBadge" style="display: none">0</span>
+      </button>
+      <button class="nav-item" onclick="showPage('favorites', this)">
+        <i class="fas fa-heart"></i>
+        <span>Favoritos</span>
+      </button>
+      <button class="nav-item" onclick="openWhatsApp()">
+        <i class="fab fa-whatsapp"></i>
+        <span>Contacto</span>
+      </button>
+    </nav>
+
+    <script src="index.js"></script>
+  </body>
+</html>
