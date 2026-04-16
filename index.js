@@ -936,7 +936,7 @@ function renderReviews(productId) {
     checkoutMode = "wa";
     openCheckout();
   }
-f
+
   function openCheckout() {
     toggleCart();
     setTimeout(() => {
